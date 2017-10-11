@@ -3,7 +3,7 @@
 I have optimized this online portfolio for speed! In particular, optimized the critical rendering path and made this page render as quickly as possible by applying the techniques I've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884) by Udacity.
 
 
-##How to view the page and pagespeed
+## How to view the page and pagespeed
 
 1. Download the repository
 1. To inspect the site on your phone, you can run a local server
@@ -41,7 +41,7 @@ Optimizations Found by [PageSpeed Insights](https://developers.google.com/speed/
 
 ## Part 2: Optimize Frames per Second in pizza.html
 
-####1. I have optimized views/pizza.html, by modifying views/js/main.js until frames per second rate is 60 fps or higher when scrolling. 
+#### 1. I have optimized views/pizza.html, by modifying views/js/main.js until frames per second rate is 60 fps or higher when scrolling. 
 
 - In the console you can view the average time to generate last 10 frames.
 
@@ -55,7 +55,7 @@ I made changes to the function `updatePositions()` that moves the sliding backgr
 	}
 
 
-####2. I have optimized the time to resize pizzas to less than 5 ms, using the pizza size slider on the views/pizza.html page. 
+#### 2. I have optimized the time to resize pizzas to less than 5 ms, using the pizza size slider on the views/pizza.html page. 
 
 - Resize time is shown in the browser developer tools.
  
@@ -100,7 +100,7 @@ I removed `determineDx` and added the needed functionalities to `changePizzaSize
 
 
 ### Customization with Bootstrap
-The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
+The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `views/css/bootstrap-grid.css` in the portfolio repo.
 
 * <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
 * <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
@@ -108,7 +108,7 @@ The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstra
 ### Web Tooling and Automation
 Gulp was used to automatically perform optimizations. Images were optimized and JS were minified. Find code in `gulpfile.js` and packages in `node_modules/gulp-imagemin`, `node_modules/gulp-uglify` in the portfolio repo.
 
-####To run gulp 
+#### To run gulp 
 If you make any changes in a `js` file or add images, the `js` file has to be minified, and the image optimized.  
  
 Make sure you have Node.js and npm installed on your computer. 
