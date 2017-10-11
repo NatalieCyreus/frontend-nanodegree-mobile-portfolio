@@ -1,16 +1,11 @@
-## Website Performance Optimization portfolio project
+# Website Performance Optimization portfolio project
 
-Your challenge, if you wish to accept it (and we sure hope you will), is to optimize this online portfolio for speed! In particular, optimize the critical rendering path and make this page render as quickly as possible by applying the techniques you've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884).
+I have optimized this online portfolio for speed! In particular, optimized the critical rendering path and made this page render as quickly as possible by applying the techniques I've picked up in the [Critical Rendering Path course](https://www.udacity.com/course/ud884) by Udacity.
 
-To get started, check out the repository and inspect the code.
 
-### Getting started
+##How to view the page and pagespeed
 
-#### Part 1: Optimize PageSpeed Insights score for index.html
-
-Some useful tips to help you get started:
-
-1. Check out the repository
+1. Download the repository
 1. To inspect the site on your phone, you can run a local server
 
   ```bash
@@ -18,38 +13,112 @@ Some useful tips to help you get started:
   $> python -m SimpleHTTPServer 8080
   ```
 
-1. Open a browser and visit localhost:8080
-1. Download and install [ngrok](https://ngrok.com/) to the top-level of your project directory to make your local server accessible remotely.
+1. Open a browser and visit [localhost:8080](http://localhost:8080/)
+1. Make your local server accessible remotely, in a new tab in the console write: 
 
   ``` bash
   $> cd /path/to/your-project-folder
   $> ./ngrok http 8080
   ```
 
-1. Copy the public URL ngrok gives you and try running it through PageSpeed Insights! Optional: [More on integrating ngrok, Grunt and PageSpeed.](http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/)
+1. Copy the public URL ngrok gives you and try running it through [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/) 
 
-Profile, optimize, measure... and then lather, rinse, and repeat. Good luck!
 
-#### Part 2: Optimize Frames per Second in pizza.html
+## Part 1: Optimize PageSpeed Insights score for index.html
 
-To optimize views/pizza.html, you will need to modify views/js/main.js until your frames per second rate is 60 fps or higher. You will find instructive comments in main.js. 
+I have optimized index.html to achieves a PageSpeed score of at least 90 for Mobile and Desktop.
 
-You might find the FPS Counter/HUD Display useful in Chrome developer tools described here: [Chrome Dev Tools tips-and-tricks](https://developer.chrome.com/devtools/docs/tips-and-tricks).
+Optimizations Found by [PageSpeed Insights](https://developers.google.com/speed/pagespeed/insights/)
 
-### Optimization Tips and Tricks
-* [Optimizing Performance](https://developers.google.com/web/fundamentals/performance/ "web performance")
-* [Analyzing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/analyzing-crp.html "analyzing crp")
-* [Optimizing the Critical Rendering Path](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/optimizing-critical-rendering-path.html "optimize the crp!")
-* [Avoiding Rendering Blocking CSS](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/render-blocking-css.html "render blocking css")
-* [Optimizing JavaScript](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/adding-interactivity-with-javascript.html "javascript")
-* [Measuring with Navigation Timing](https://developers.google.com/web/fundamentals/performance/critical-rendering-path/measure-crp.html "nav timing api"). We didn't cover the Navigation Timing API in the first two lessons but it's an incredibly useful tool for automated page profiling. I highly recommend reading.
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/eliminate-downloads.html">The fewer the downloads, the better</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/optimize-encoding-and-transfer.html">Reduce the size of text</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/image-optimization.html">Optimize images</a>
-* <a href="https://developers.google.com/web/fundamentals/performance/optimizing-content-efficiency/http-caching.html">HTTP caching</a>
+- Avoid landing page redirects
+- Eliminate render-blocking JavaScript and CSS in above-the-fold content
+- Optimize images
+- Minify CSS
+- Minify JavaScript
+- Prioritize visible content
+
+
+
+## Part 2: Optimize Frames per Second in pizza.html
+
+####1. I have optimized views/pizza.html, by modifying views/js/main.js until frames per second rate is 60 fps or higher when scrolling. 
+
+- In the console you can view the average time to generate last 10 frames.
+
+I made changes to the function `updatePositions()` that moves the sliding background pizzas based on scroll position. The variable `scrollTop` was declared and given a value inside a `for` loop. I moved out `scrollTop` from the `for` loop. 
+
+	  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+  
+	  for (var i = 0; i < items.length; i++) {
+	  var phase = Math.sin((scrollTop / 1250) + (i % 5));
+	  items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+	}
+
+
+####2. I have optimized the time to resize pizzas to less than 5 ms, using the pizza size slider on the views/pizza.html page. 
+
+- Resize time is shown in the browser developer tools.
+ 
+ 
+To change the pizza slices size it used the function `resizePizzas` with 3 function inside to change the size: 
+
+1. `changeSliderLabel(size)`
+2. `determineDx (elem, size)`
+3. `changePizzaSizes(size)`
+
+
+I removed `determineDx` and added the needed functionalities to `changePizzaSizes`.   
+
+ 
+-  `changePizzaSizes(size)` iterated through pizza elements on the page and changes their widths. It did so by calling `determineDx`. 
+ 
+-  `determineDx` 
+	-  	used a switch statement, `sizeSwitcher` to change the slider value to a percent width together with some calculations inside the `determineDx`.
+	- The function returned `var dx`. Wich was a calculation of the variables `newSize` - `oldSize` * `windowWidth`. 
+	- It was basicly doing a lot of unnessesary calculations and returning a value from the swich statement that would easily be calculated directly inside the `changePizzaSizes`.
+
+-  The `changePizzaSizes` had a `for` loop that declared a new `dx` variable with the value of the function `determineDx` (that returned a second `var dx`)
+-  The functions made a lot of unuseful calculations that wasn't used in the end, or unnessesary to solve the final calculation. 
+
+		  function changePizzaSizes(size) {
+    	for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
+	      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
+	      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+	      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+	    }
+	  	}
+	  	
+	- The swich statement was removed from `determineDx` and into `changePizzaSizes`. 
+	- The `for` loop that itterated `document.querySelectorAll(".randomPizzaContainer").length` inside the `for` loop in each new variable declaration was moved into one variable outside of the `for` loop: 
+
+			var randomPizza = document.querySelectorAll(".randomPizzaContainer");
+		    for (var i = 0; i < randomPizza.length; i++) {
+		      randomPizza[i].style.width = newwidth + '%';
+		    }
+
+ 
+
 
 ### Customization with Bootstrap
 The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstrap</a> framework. All custom styles are in `dist/css/portfolio.css` in the portfolio repo.
 
 * <a href="http://getbootstrap.com/css/">Bootstrap's CSS Classes</a>
 * <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
+
+### Web Tooling and Automation
+Gulp was used to automatically perform optimizations. Images were optimized and JS were minified. Find code in `gulpfile.js` and packages in `node_modules/gulp-imagemin`, `node_modules/gulp-uglify` in the portfolio repo.
+
+####To run gulp 
+If you make any changes in a `js` file or add images, the `js` file has to be minified, and the image optimized.  
+ 
+Make sure you have Node.js and npm installed on your computer. 
+
+- Follow the steps on this site to download or view if its already installed [www.npmjs.com/get-npm](https://www.npmjs.com/get-npm?utm_source=house&utm_medium=homepage&utm_campaign=free%20orgs&utm_term=Install%20npm)
+- When you have all instalations needed, in the terminal write: 
+
+  ```bash
+  $> cd /path/to/your-project-folder
+  $> gulp
+  ```
+
+ 
