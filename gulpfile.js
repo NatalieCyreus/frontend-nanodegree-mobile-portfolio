@@ -1,6 +1,6 @@
 var gulp = require('gulp'),
 imagemin = require('gulp-imagemin'),
-uglify = require('gulp-uglify'),
+uglify = require('gulp-uglify');
 
 gulp.task('default', function() {
   // place code for your default task here. When 'gulp' is run in the terminal this will execute.
