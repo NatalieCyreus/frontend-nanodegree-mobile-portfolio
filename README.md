@@ -9,7 +9,7 @@ I have optimized this online portfolio for speed! In particular, optimized the c
 1. To inspect the site on your phone, you can run a local server
 
   ```bash
-  $> cd /path/to/your-project-folder
+  $> cd /path/to/your-project-folder/dist
   $> python -m SimpleHTTPServer 8080
   ```
 
@@ -106,10 +106,10 @@ The portfolio was built on Twitter's <a href="http://getbootstrap.com/">Bootstra
 * <a href="http://getbootstrap.com/components/">Bootstrap's Components</a>
 
 ### Web Tooling and Automation
-Gulp was used to automatically perform optimizations. Images were optimized and JS were minified. Find code in `gulpfile.js` and packages in `node_modules/gulp-imagemin`, `node_modules/gulp-uglify` in the portfolio repo.
+Gulp was used to automatically perform optimizations. Images were optimized and JS, CSS and HTML were minified. The gulp packages can be found in `src/node_modules`. 
 
 #### To run gulp 
-If you make any changes in a `js` file or add images, the `js` file has to be minified, and the image optimized.  
+If you make any changes in `src`, run gulp to save those changes to the `dist` files. The `gulp` command leads to a function in `gulpfile.js` that involves all the functions to minify the `src` files to the `dist`   
  
 Make sure you have Node.js and npm installed on your computer. 
 
@@ -117,7 +117,7 @@ Make sure you have Node.js and npm installed on your computer.
 - When you have all instalations needed, in the terminal write: 
 
   ```bash
-  $> cd /path/to/your-project-folder
+  $> cd /path/to/your-project-folder/src
   $> gulp
   ```
 
