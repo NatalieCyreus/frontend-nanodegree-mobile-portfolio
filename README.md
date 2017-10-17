@@ -45,14 +45,16 @@ Optimizations Found by [PageSpeed Insights](https://developers.google.com/speed/
 
 - In the console you can view the average time to generate last 10 frames.
 
-I made changes to the function `updatePositions()` that moves the sliding background pizzas based on scroll position. The variable `scrollTop` was declared and given a value inside a `for` loop. I moved out `scrollTop` from the `for` loop. 
+- I made changes to the function `updatePositions()` that moves the sliding background pizzas based on scroll position. The variable `scrollTop` was declared and given a value inside a `for` loop. I moved out `scrollTop` from the `for` loop. 
 
-	  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  
-	  for (var i = 0; i < items.length; i++) {
-	  var phase = Math.sin((scrollTop / 1250) + (i % 5));
-	  items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
-	}
+		  var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+	  
+		  for (var i = 0; i < items.length; i++) {
+		  var phase = Math.sin((scrollTop / 1250) + (i % 5));
+		  items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
+		}
+		
+- I added `transform: translateZ(0);` and `backface-visibility: hidden;` to `.move` in `src/views/css/style.css `
 
 
 #### 2. I have optimized the time to resize pizzas to less than 5 ms, using the pizza size slider on the views/pizza.html page. 
@@ -96,7 +98,47 @@ I removed `determineDx` and added the needed functionalities to `changePizzaSize
 		      randomPizza[i].style.width = newwidth + '%';
 		    }
 
+- I removed the `div id="pizza0"` and `div id="pizza1"` from the `pizza.html` document. Because they had not the same diemensions as the `pizzaElementGenerator` instances. And instead of changing the diemensions on those 2 divs, I removed them and created 2 new instanses of the `pizzaElementGenerator` class, by changing the for loop to count from 0 instead of 2. This also decreased the length of the `pizza.html`. 
+
+
+		for (var i = 0; i < 100; i++) {
+			var pizzasDiv = document.getElementById("randomPizzas");
+			pizzasDiv.appendChild(pizzaElementGenerator(i));
+		}
  
+I changed the number of background pizzas to at least 24 (3 full lines of 8 background pizzas). I dynamically calculate the number of pizzas needed to fill the screen, based on browser window resolution.
+
+I calculated the number of rows using the height property of the screen divided by `s`, and then multiply `row` * `cols`.
+I declared a new `iHeight` and `row` and `rows` to calculate. Then I declared `elem` before the for loop instead of inside it. 	
+var iHeight = window.screen.height;
+	var row = iHeight/s;
+	var rows = row * cols;
+	var elem;
+
+	window.addEventListener('scroll', updatePositions);
+	
+	// Generates the sliding pizzas when the page loads.
+	document.addEventListener('DOMContentLoaded', function() {
+		var cols = 8;
+		var s = 256;
+		var iHeight = window.screen.height;
+		var row = iHeight/s;
+		var rows = row * cols;
+		var elem;
+		var movingPizzas = document.getElementById('movingPizzas1');
+		for (var i = 0; i < rows; i++) {
+			elem = document.createElement('img');
+			elem.className = 'mover';
+			elem.src = "images/pizza.png";
+			elem.style.height = "100px";
+			elem.style.width = "73.333px";
+			elem.basicLeft = (i % cols) * s;
+			elem.style.top = (Math.floor(i / cols) * s) + 'px';
+			movingPizzas.appendChild(elem);
+		}
+		updatePositions();
+	});
+
 
 
 ### Customization with Bootstrap

@@ -14,10 +14,11 @@ gulp.task('default', function() {
   gulp.src('*.html')
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('../dist'));
-  //Minify HTML in src/views
-      gulp.src('views/*.html')
-        .pipe(htmlmin({collapseWhitespace: true}))
-        .pipe(gulp.dest('../dist/views'));
+
+    gulp.src('views/*.html')
+      .pipe(htmlmin({collapseWhitespace: true}))
+      .pipe(gulp.dest('../dist/views/'));
+
 
   //Minify CSS in src
   gulp.src('css/*.css')
@@ -41,6 +42,7 @@ gulp.task('default', function() {
 
 
     //minify JS in src
+
     gulp.src('js/*.js')
     .pipe(uglify())
     .pipe(gulp.dest('../dist/js'));
